@@ -1,0 +1,55 @@
+﻿
+
+/*
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+input, textarea {
+    font-size: 18px;
+    width: 200px;
+}
+
+input[type=submit] {
+    width: auto;
+}
+
+label {
+    font-size: 16px;
+}
+
+.signupForm {
+    border: 1px solid grey;
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 2px;
+    width: auto;
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+    .signupForm input {
+        width: 200px;
+    }
+
+    .signupForm label {
+        width: 150px;
+        display: inline-block;
+    }
+
+    .signupForm input[type=submit] {
+        width: auto;
+    }
+
+menu li {
+    display: inline;
+}
+
+    menu li::after {
+        content: ' |';
+    }
+
+    menu li:last-of-type::after {
+        content: "";
+    }
+*/
