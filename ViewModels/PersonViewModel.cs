@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Acme.ViewModels
 {
     public class PersonViewModel
     {
+        public Guid Id { get; set; }
         [Required]
         [MinLength(2)]
         public string FirstName { get; set; }
