@@ -1,10 +1,20 @@
-﻿using Acme.ViewModels;
+﻿using Acme.Data;
+using Acme.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace Acme.Controllers
 {
     public class AppController : Controller
     {
+        private readonly IAcmeRepository _repository;
+
+        public AppController(IAcmeRepository repository)
+        {
+           _repository = repository;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -24,7 +34,9 @@ namespace Acme.Controllers
         [HttpGet("listing")]
         public IActionResult Listing()
         {
-            return View();
+            var results = _repository.GetAllPersons().OrderBy(x => x.Id);
+
+            return View(results);
         }
     }
 }

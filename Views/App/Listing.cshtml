@@ -1,3 +1,21 @@
-﻿@{
+﻿@model IEnumerable<Person>
+@{
     ViewBag.Title = "Interested Persons Listing";
 }
+
+<p>Count: @Model.Count()</p>
+<div class="row">
+    @foreach (var p in Model)
+    {
+    <div class="col-md-3">
+        <div class="border bg-light rounded p-1">
+            <h3>@p.FirstName @p.LastName</h3>
+            <ul>
+                <li>Email: @p.Email</li>
+                <li>Activity: @p.Activity</li>
+                <li>Comment: @p.Comment</li>
+            </ul>
+        </div>
+    </div>
+    }
+</div>

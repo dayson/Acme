@@ -1,0 +1,42 @@
+[
+	{
+		"Id": "00000000-0000-0000-0000-000000000000",
+		"FirstName": "Kyle",
+		"LastName": "Lowry",
+		"Email": "kyle@lowry.ca",
+		"Activity": "Movie",
+		"Comment": "The Sandlot"
+	},
+	{
+		"Id": "00000000-0000-0000-0000-000000000000",
+		"FirstName": "Fred",
+		"LastName": "VanVleet",
+		"Email": "fred@vanvleet.ca",
+		"Activity": "Board Games",
+		"Comment": "Settlers of Catan"
+	},
+	{
+		"Id": "00000000-0000-0000-0000-000000000000",
+		"FirstName": "OG",
+		"LastName": "Annunoby",
+		"Email": "og@annunoby.ca",
+		"Activity": "Video Games",
+		"Comment": "Team Fortress 2"
+	},
+	{
+		"Id": "00000000-0000-0000-0000-000000000000",
+		"FirstName": "Pascal",
+		"LastName": "Siakim",
+		"Email": "pascal@siakim.ca",
+		"Activity": "Brew Beer",
+		"Comment": "Stout of some sort"
+	},
+	{
+		"Id": "00000000-0000-0000-0000-000000000000",
+		"FirstName": "Marc",
+		"LastName": "Gasol",
+		"Email": "marc@gasol.ca",
+		"Activity": "Escape Room",
+		"Comment": "Escape an alien aircraft"
+	}
+]
