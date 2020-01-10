@@ -7,15 +7,15 @@
 <div class="row">
     @foreach (var p in Model)
     {
-        <div class="col-md-3 py-2">
-            <div class="card h-100 bg-light rounded p-1 m-1">
-                <h3>@p.FirstName @p.LastName</h3>
-                <ul class="text-left list-inline" style="list-style-type:none" >
-                    <li><strong>Email:</strong> @p.Email</li>
-                    <li><strong>Activity:</strong> @p.Activity</li>
-                    <li><strong>Comment:</strong> @p.Comment</li>
-                </ul>
-            </div>
+    <div class="col-md-3">
+        <div class="border bg-light rounded p-1">
+            <h3>@p.FirstName @p.LastName</h3>
+            <ul>
+                <li>Email: @p.Email</li>
+                <li>Activity: @p.Activity</li>
+                <li>Comment: @p.Comment</li>
+            </ul>
         </div>
+    </div>
     }
 </div>

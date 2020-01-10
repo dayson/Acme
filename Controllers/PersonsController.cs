@@ -58,7 +58,7 @@ namespace Acme.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromForm]PersonViewModel model)
+        public IActionResult Post([FromBody]PersonViewModel model)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Acme.Controllers
                     _repository.AddEntity(newPerson);
                     if (_repository.SaveAll())
                     {
-                        return Redirect("/listing");
+                        return Created($"/api/persons/{newPerson.Id}", _mapper.Map<Person, PersonViewModel>(newPerson));
                     }
                 }
                 else
