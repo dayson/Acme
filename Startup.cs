@@ -46,6 +46,7 @@ namespace Acme
             }
 
             app.UseStaticFiles();
+            app.UseNodeModules();
 
             app.UseRouting();
 
