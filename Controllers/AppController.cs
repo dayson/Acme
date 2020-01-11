@@ -1,8 +1,11 @@
 ﻿using Acme.Data;
 using Acme.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 
 namespace Acme.Controllers
 {
@@ -12,7 +15,7 @@ namespace Acme.Controllers
 
         public AppController(IAcmeRepository repository)
         {
-           _repository = repository;
+            _repository = repository;
         }
 
         public IActionResult Index()
@@ -25,16 +28,33 @@ namespace Acme.Controllers
         {
             if (ModelState.IsValid)
             {
+                string apiUrl = "http://localhost:8888";
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+
+                    var jsonContent = JsonConvert.SerializeObject(model);
+                    var response = client.PostAsync("/api/persons",
+                        new StringContent(jsonContent, Encoding.UTF8, "application/json")).GetAwaiter().GetResult();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return View();
+                    }
+                }
+
                 ModelState.Clear();
             }
 
-            return View();
+            return RedirectToAction("Listing");
         }
 
         [HttpGet("listing")]
         public IActionResult Listing()
         {
-            var results = _repository.GetAllPersons().OrderBy(x => x.Id);
+            var results = _repository.GetAllPersons().OrderBy(x => x.FirstName);
 
             return View(results);
         }
