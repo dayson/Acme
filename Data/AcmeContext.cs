@@ -17,16 +17,16 @@ namespace Acme.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Person>()
-                .HasData(new Person()
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Pascal",
-                    LastName = "Siakim",
-                    Email = "pascal@siakim.com",
-                    Activity = "Escape Room",
-                    Comment = "Yay!"
-                }); ;
+            //modelBuilder.Entity<Person>()
+            //    .HasData(new Person()
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        FirstName = "Pascal",
+            //        LastName = "Siakim",
+            //        Email = "pascal@siakim.com",
+            //        Activity = "Escape Room",
+            //        Comment = "Yay!"
+            //    });
         }
     }
 }
