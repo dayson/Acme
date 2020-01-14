@@ -1,0 +1,46 @@
+﻿<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card card-body bg-light">
+            <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+            <form (submit)="onSubmit()" #theForm="ngForm" novalidate>
+
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" name="firstName" [(ngModel)]="person.firstName" #firstName required/>
+                    <div class="text-danger" *ngIf="firstName.touched && firstName.invalid && firstName.errors.required">First name is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="person.lastName" #lastName="ngModel" required/>
+                    <div class="text-danger" *ngIf="lastName.touched && lastName.invalid && lastName.errors.required">Last name is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="person.email" #email="ngModel" email required/>
+                    <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert-email alert-danger-email">
+                        <div class="text-danger" [hidden]="!email.errors.required">
+                            Email is required
+                        </div>
+                        <div class="text-danger" [hidden]="!email.errors">
+                            Please input a valid email.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="activity">Activity:</label>
+                    <select for="activity" class="form-control" id="activity" name="activity" [(ngModel)]="person.activity" #activity="ngModel" required>
+                        <option *ngFor="let act of activities" [value]="act">{{ act }}</option>
+                    </select>
+                    <div class="text-danger" *ngIf="activity.touched && activity.invalid && activity.errors.required">Activity is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea rows="4" for="comment" class="form-control" id="comment" name="comment" [(ngModel)]="person.comment"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Sign up" [disabled]="theForm.invalid"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

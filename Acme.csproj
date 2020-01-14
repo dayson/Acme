@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AcmeApp\app\form\signupform.component.ts" />
+    <None Remove="AcmeApp\app\list\personlist.component.ts" />
+    <None Remove="AcmeApp\app\shared\dataService.ts" />
+    <None Remove="AcmeApp\app\shared\person.ts" />
+    <None Remove="AcmeApp\app\signup\signup.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\index.html" />
   </ItemGroup>
 
@@ -15,6 +23,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.7.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OdeToCode.UseNodeModules" Version="3.0.0" />
   </ItemGroup>

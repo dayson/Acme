@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Acme.Controllers
 {
@@ -28,7 +29,7 @@ namespace Acme.Controllers
         {
             try
             {
-                return Ok(_mapper.Map<IEnumerable<Person>, IEnumerable<PersonViewModel>>(_repository.GetAllPersons()));
+                return Ok(_mapper.Map<IEnumerable<Person>, IEnumerable<PersonViewModel>>(_repository.GetAllPersons().OrderBy(x => x.FirstName)));
             }
             catch (Exception ex)
             {

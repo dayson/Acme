@@ -1,11 +1,7 @@
 ﻿using Acme.Data;
 using Acme.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 
 namespace Acme.Controllers
 {
@@ -26,29 +22,7 @@ namespace Acme.Controllers
         [HttpPost]
         public IActionResult Index(PersonViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                string apiUrl = "http://localhost:8888";
-
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(apiUrl);
-                    client.DefaultRequestHeaders.Accept.Clear();
-
-                    var jsonContent = JsonConvert.SerializeObject(model);
-                    var response = client.PostAsync("/api/persons",
-                        new StringContent(jsonContent, Encoding.UTF8, "application/json")).GetAwaiter().GetResult();
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return View();
-                    }
-                }
-
-                ModelState.Clear();
-            }
-
-            return RedirectToAction("Listing");
+            return View();
         }
 
         [HttpGet("listing")]
