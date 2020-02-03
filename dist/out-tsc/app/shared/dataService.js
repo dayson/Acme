@@ -10,18 +10,20 @@ let DataService = class DataService {
         return this.http.get("api/persons")
             .pipe(map((data) => {
             this.persons = data;
-            return true;
+            return this.persons;
         }));
     }
     signup(person) {
         return this.http.post("api/persons", person)
-            .pipe(map((response) => {
-            return true;
+            .pipe(map(() => {
+            return person;
         }));
     }
 };
 DataService = __decorate([
-    Injectable()
+    Injectable({
+        providedIn: 'root' // declare that this service should be created by root application injector
+    })
 ], DataService);
 export { DataService };
 //# sourceMappingURL=dataService.js.map

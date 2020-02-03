@@ -1,6 +1,8 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { DataService } from "../shared/dataService";
-import { Person } from "../shared/person";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { IPerson as Person } from "../shared/IPerson";
 
 @Component({
     selector: "person-list",
@@ -13,14 +15,9 @@ export class PersonList implements OnInit {
     constructor(private data: DataService) {
     }
 
-    public persons: Person[] = [];
+    persons$: Observable<Person[]>;
 
-    ngOnInit(): void {
-        this.data.loadPersons()
-            .subscribe(success => {
-                if (success) {
-                    this.persons = this.data.persons;
-                }
-            });
+    ngOnInit() {
+        this.persons$ = this.data.loadPersons();
     }
 }

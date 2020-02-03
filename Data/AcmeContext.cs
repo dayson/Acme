@@ -17,8 +17,8 @@ namespace Acme.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<Person>()
-            //    .HasData(new Person()
+            //modelBuilder.Entity<IPerson>()
+            //    .HasData(new IPerson()
             //    {
             //        Id = Guid.NewGuid(),
             //        FirstName = "Pascal",

@@ -1,16 +1,13 @@
 import { __decorate } from "tslib";
 import { Component } from "@angular/core";
+import { Observable } from "rxjs";
 let PersonList = class PersonList {
     constructor(data) {
         this.data = data;
-        this.persons = [];
     }
     ngOnInit() {
-        this.data.loadPersons()
-            .subscribe(success => {
-            if (success) {
-                this.persons = this.data.persons;
-            }
+        this.persons$ = new Observable(() => {
+            this.data.loadPersons();
         });
     }
 };

@@ -1,24 +1,39 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormControl } from "@angular/forms";
+
+import { IPerson as Person } from "../shared/IPerson";
 import { DataService } from "../shared/dataService";
-import { Router } from "@angular/router";
-import { Person } from "../shared/person";
+import { Router } from '@angular/router';
 
 @Component({
     selector: "signup-form",
     templateUrl: "./signupform.component.html",
     styleUrls: []
 })
-export class SignupForm {
-
-    constructor(public data: DataService, private router: Router) { }
+export class SignupForm implements OnInit {
+    supForm: FormGroup;
+    person: Partial<Person>;
 
     activities = ['Movie', 'Board Games', 'Video Games', 'Brew Beer', 'Escape Room'];
 
-    public person = new Person("00000000-0000-0000-0000-000000000000", "", "", "", "", "");
+    constructor(public data: DataService, private router: Router) { }
+
+    ngOnInit() {
+        this.supForm = new FormGroup({
+            firstName: new FormControl(),
+            lastName: new FormControl(),
+            email: new FormControl(),
+            activity: new FormControl(),
+            comment: new FormControl()
+        });
+    }
 
     errorMessage: string = "";
-    onSubmit() {
-        this.data.signup(this.person)
+    save() {
+        console.log(this.supForm);
+        console.log("Saved: " + JSON.stringify(this.supForm.value));
+        const p = { ...this.person, ...this.supForm.value };
+        this.data.signup(p)
             .subscribe(success => {
                     if (success) {
                         this.router.navigate(["listing"]);
@@ -29,3 +44,4 @@ export class SignupForm {
                 err => this.errorMessage = "Failed to sign up");
     }
 }
+

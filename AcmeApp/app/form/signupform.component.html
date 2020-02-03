@@ -1,46 +1,136 @@
-﻿<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="card card-body bg-light">
-            <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
-            <form (submit)="onSubmit()" #theForm="ngForm" novalidate>
+﻿<div class="card">
+    <div class="card-body">
+        <form novalidate
+              (ngSubmit)="save()"
+              [formGroup]="supForm">
 
-                <div class="form-group">
-                    <label for="firstName">First Name:</label>
-                    <input type="text" class="form-control" name="firstName" [(ngModel)]="person.firstName" #firstName required/>
-                    <div class="text-danger" *ngIf="firstName.touched && firstName.invalid && firstName.errors.required">First name is required</div>
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label"
+                       for="firstNameId">First Name</label>
+                <div class="col-md-8">
+                    <input class="form-control"
+                           id="firstNameId"
+                           type="text"
+                           placeholder="First Name (required)"
+                           required
+                           minlength="2"
+                           formControlName="firstName"
+                           [ngClass]="{'is-invalid': (supForm.get('firstName').touched || supForm.get('firstName').dirty) && !supForm.get('firstName').valid }" />
+                    <span class="invalid-feedback">
+                        <span *ngIf="supForm.get('firstName').errors?.required">
+                            Please enter your first name.
+                        </span>
+                        <span *ngIf="supForm.get('firstName').errors?.minlength">
+                            The first name must be longer than 1 characters.
+                        </span>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="person.lastName" #lastName="ngModel" required/>
-                    <div class="text-danger" *ngIf="lastName.touched && lastName.invalid && lastName.errors.required">Last name is required</div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label"
+                       for="lastNameId">Last Name</label>
+                <div class="col-md-8">
+                    <input class="form-control"
+                           id="lastNameId"
+                           type="text"
+                           placeholder="Last Name (required)"
+                           required
+                           minlength="2"
+                           formControlName="lastName"
+                           [ngClass]="{'is-invalid': (supForm.get('lastName').touched || supForm.get('lastName').dirty) && !supForm.get('lastName').valid }" />
+                    <span class="invalid-feedback">
+                        <span *ngIf="supForm.get('lastName').errors?.required">
+                            Please enter your last name.
+                        </span>
+                        <span *ngIf="supForm.get('lastName').errors?.minlength">
+                            The last name must be longer than 1 characters.
+                        </span>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="person.email" #email="ngModel" email required/>
-                    <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert-email alert-danger-email">
-                        <div class="text-danger" [hidden]="!email.errors.required">
-                            Email is required
-                        </div>
-                        <div class="text-danger" [hidden]="!email.errors">
-                            Please input a valid email.
-                        </div>
-                    </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label"
+                       for="emailId">Email</label>
+                <div class="col-md-8">
+                    <input class="form-control"
+                           id="emailId"
+                           type="email"
+                           placeholder="Email (required)"
+                           required
+                           email
+                           formControlName="email"
+                           [ngClass]="{'is-invalid': (supForm.get('email').touched || supForm.get('email').dirty) && !supForm.get('email').valid }" />
+                    <span class="invalid-feedback">
+                        <span *ngIf="supForm.get('email').errors?.required">
+                            Please enter your email address.
+                        </span>
+                        <span *ngIf="supForm.get('email').errors?.email">
+                            Please enter a valid email.
+                        </span>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <label for="activity">Activity:</label>
-                    <select for="activity" class="form-control" id="activity" name="activity" [(ngModel)]="person.activity" #activity="ngModel" required>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label"
+                       for="activityId">Activity</label>
+                <div class="col-md-8">
+                    <select class="form-control"
+                            id="activityId"
+                            name="activity"
+                            required
+                            formControlName="activity"
+                            [ngClass]="{'is-invalid': (supForm.get('activity').touched || supForm.get('activity').dirty) && !supForm.get('activity').valid }">
                         <option *ngFor="let act of activities" [value]="act">{{ act }}</option>
                     </select>
-                    <div class="text-danger" *ngIf="activity.touched && activity.invalid && activity.errors.required">Activity is required</div>
+                    <span class="invalid-feedback">
+                        <span *ngIf="supForm.get('activity').errors?.required">
+                            Please enter an activity.
+                        </span>
+                        <span *ngIf="supForm.get('activity').errors?.valid">
+                            Please enter a valid activity.
+                        </span>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <label for="comment">Comment:</label>
-                    <textarea rows="4" for="comment" class="form-control" id="comment" name="comment" [(ngModel)]="person.comment"></textarea>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-md-2 col-form-label"
+                       for="commentId">Comment</label>
+                <div class="col-md-8">
+                    <input class="form-control"
+                           id="commentId"
+                           type="text"
+                           placeholder="Comment (optional)"
+                           maxlength="50"
+                           formControlName="comment"
+                           [ngClass]="{'is-invalid': !supForm.get('comment').valid }" />
+                    <span class="invalid-feedback">
+                        <span *ngIf="supForm.get('comment').errors?.maxlength">
+                            The last name must be 50 characters or less.
+                        </span>
+                    </span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Sign up" [disabled]="theForm.invalid"/>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="offset-md-2 col-md-4">
+                    <button class="btn btn-primary mr-3"
+                            type="submit"
+                            style="width: 85px"
+                            [title]="supForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                            [disabled]="!supForm.valid">
+                        Sign Up
+                    </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+
 </div>
+<br>Dirty: {{ supForm.dirty }}
+<br>Touched: {{ supForm.touched }}
+<br>Valid: {{ supForm.valid }}
+<br>Value: {{ supForm.value | json }}

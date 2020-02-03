@@ -2,29 +2,30 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Person } from "./person";
+import { IPerson as Person } from "./IPerson";
 
-@Injectable()
+@Injectable({
+     providedIn : 'root' // declare that this service should be created by root application injector
+})
 export class DataService {
 
     constructor(private http: HttpClient) { }
 
-    public persons: Person[] = [];
-    public person: Person;
+    persons: Person[] = [];
 
-    loadPersons(): Observable<boolean> {
+    loadPersons(): Observable<Person[]> {
         return this.http.get("api/persons")
             .pipe(map((data: any[]) => {
                 this.persons = data;
-                return true;
+                return this.persons;
             }));
     }
 
-    public signup(person: Person) {
+    signup(person: Partial<Person>): Observable<Partial<Person>> {
         return this.http.post("api/persons", person)
-            .pipe(
-            map((response: any) => {
-                return true;
+            .pipe(map(() =>
+            {
+                return person;
             }));
     }
 

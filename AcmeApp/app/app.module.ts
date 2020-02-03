@@ -6,10 +6,9 @@ import { AppComponent } from "./app.component";
 import { Signup } from "./signup/signup.component";
 import { PersonList } from "./list/personlist.component";
 import { SignupForm } from "./form/signupform.component";
-import { DataService } from "./shared/dataService";
 
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
 let routes = [
     { path: "", component: Signup },
@@ -26,14 +25,14 @@ let routes = [
   imports: [
       BrowserModule,
       HttpClientModule,
-      FormsModule,
+      ReactiveFormsModule,
       RouterModule.forRoot(routes,
           {
               useHash: true,
               enableTracing: false // for debugging of the routes
           })
   ],
-  providers: [DataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

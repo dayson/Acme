@@ -8,7 +8,7 @@
     <None Remove="AcmeApp\app\form\signupform.component.ts" />
     <None Remove="AcmeApp\app\list\personlist.component.ts" />
     <None Remove="AcmeApp\app\shared\dataService.ts" />
-    <None Remove="AcmeApp\app\shared\person.ts" />
+    <None Remove="AcmeApp\app\shared\IPerson.ts" />
     <None Remove="AcmeApp\app\signup\signup.component.ts" />
   </ItemGroup>
 

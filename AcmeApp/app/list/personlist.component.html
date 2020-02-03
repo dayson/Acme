@@ -1,6 +1,6 @@
 ﻿<h1 class="text text-center">Interested Persons Listing</h1>
 <div class="row">
-    <div class="col-md-4" *ngFor="let p of persons">
+    <div class="col-md-4" *ngFor="let p of persons$ | async">
         <div class="card bg-light rounded p-1 m-1">
             <h3>{{ p.firstName }} {{ p.lastName }}</h3>
             <ul class="list-unstyled">

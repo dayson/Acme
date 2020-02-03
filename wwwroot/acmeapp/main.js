@@ -71,10 +71,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _signup_signup_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./signup/signup.component */ "./AcmeApp/app/signup/signup.component.ts");
 /* harmony import */ var _list_personlist_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./list/personlist.component */ "./AcmeApp/app/list/personlist.component.ts");
 /* harmony import */ var _form_signupform_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./form/signupform.component */ "./AcmeApp/app/form/signupform.component.ts");
-/* harmony import */ var _shared_dataService__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./shared/dataService */ "./AcmeApp/app/shared/dataService.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
 
 
 
@@ -102,13 +100,13 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormsModule"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_9__["RouterModule"].forRoot(routes, {
+            _angular_forms__WEBPACK_IMPORTED_MODULE_9__["ReactiveFormsModule"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_8__["RouterModule"].forRoot(routes, {
                 useHash: true,
                 enableTracing: false // for debugging of the routes
             })
         ],
-        providers: [_shared_dataService__WEBPACK_IMPORTED_MODULE_8__["DataService"]],
+        providers: [],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
     })
 ], AppModule);
@@ -129,9 +127,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SignupForm", function() { return SignupForm; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _shared_dataService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/dataService */ "./AcmeApp/app/shared/dataService.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var _shared_person__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/person */ "./AcmeApp/app/shared/person.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
+/* harmony import */ var _shared_dataService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/dataService */ "./AcmeApp/app/shared/dataService.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 
 
 
@@ -142,11 +140,22 @@ let SignupForm = class SignupForm {
         this.data = data;
         this.router = router;
         this.activities = ['Movie', 'Board Games', 'Video Games', 'Brew Beer', 'Escape Room'];
-        this.person = new _shared_person__WEBPACK_IMPORTED_MODULE_4__["Person"]("00000000-0000-0000-0000-000000000000", "", "", "", "", "");
         this.errorMessage = "";
     }
-    onSubmit() {
-        this.data.signup(this.person)
+    ngOnInit() {
+        this.supForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+            firstName: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](),
+            lastName: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](),
+            email: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](),
+            activity: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](),
+            comment: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]()
+        });
+    }
+    save() {
+        console.log(this.supForm);
+        console.log("Saved: " + JSON.stringify(this.supForm.value));
+        const p = Object.assign({}, this.person, this.supForm.value);
+        this.data.signup(p)
             .subscribe(success => {
             if (success) {
                 this.router.navigate(["listing"]);
@@ -158,8 +167,8 @@ let SignupForm = class SignupForm {
     }
 };
 SignupForm.ctorParameters = () => [
-    { type: _shared_dataService__WEBPACK_IMPORTED_MODULE_2__["DataService"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
+    { type: _shared_dataService__WEBPACK_IMPORTED_MODULE_3__["DataService"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }
 ];
 SignupForm = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -191,15 +200,9 @@ __webpack_require__.r(__webpack_exports__);
 let PersonList = class PersonList {
     constructor(data) {
         this.data = data;
-        this.persons = [];
     }
     ngOnInit() {
-        this.data.loadPersons()
-            .subscribe(success => {
-            if (success) {
-                this.persons = this.data.persons;
-            }
-        });
+        this.persons$ = this.data.loadPersons();
     }
 };
 PersonList.ctorParameters = () => [
@@ -243,13 +246,13 @@ let DataService = class DataService {
         return this.http.get("api/persons")
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((data) => {
             this.persons = data;
-            return true;
+            return this.persons;
         }));
     }
     signup(person) {
         return this.http.post("api/persons", person)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((response) => {
-            return true;
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => {
+            return person;
         }));
     }
 };
@@ -257,35 +260,11 @@ DataService.ctorParameters = () => [
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
 ];
 DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root' // declare that this service should be created by root application injector
+    })
 ], DataService);
 
-
-
-/***/ }),
-
-/***/ "./AcmeApp/app/shared/person.ts":
-/*!**************************************!*\
-  !*** ./AcmeApp/app/shared/person.ts ***!
-  \**************************************/
-/*! exports provided: Person */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Person", function() { return Person; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-
-class Person {
-    constructor(id, firstName, lastName, email, activity, comment) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.activity = activity;
-        this.comment = comment;
-    }
-}
 
 
 /***/ }),
@@ -397,7 +376,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"row\">\r\n    <div class=\"col-md-6 offset-md-3\">\r\n        <div class=\"card card-body bg-light\">\r\n            <div *ngIf=\"errorMessage\" class=\"alert alert-warning\">{{ errorMessage }}</div>\r\n            <form (submit)=\"onSubmit()\" #theForm=\"ngForm\" novalidate>\r\n\r\n                <div class=\"form-group\">\r\n                    <label for=\"firstName\">First Name:</label>\r\n                    <input type=\"text\" class=\"form-control\" name=\"firstName\" [(ngModel)]=\"person.firstName\" #firstName required/>\r\n                    <div class=\"text-danger\" *ngIf=\"firstName.touched && firstName.invalid && firstName.errors.required\">First name is required</div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"lastName\">Last Name:</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\" [(ngModel)]=\"person.lastName\" #lastName=\"ngModel\" required/>\r\n                    <div class=\"text-danger\" *ngIf=\"lastName.touched && lastName.invalid && lastName.errors.required\">Last name is required</div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"email\">Email:</label>\r\n                    <input type=\"email\" class=\"form-control\" id=\"email\" name=\"email\" [(ngModel)]=\"person.email\" #email=\"ngModel\" email required/>\r\n                    <div *ngIf=\"email.errors && (email.dirty || email.touched)\" class=\"alert-email alert-danger-email\">\r\n                        <div class=\"text-danger\" [hidden]=\"!email.errors.required\">\r\n                            Email is required\r\n                        </div>\r\n                        <div class=\"text-danger\" [hidden]=\"!email.errors\">\r\n                            Please input a valid email.\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"activity\">Activity:</label>\r\n                    <select for=\"activity\" class=\"form-control\" id=\"activity\" name=\"activity\" [(ngModel)]=\"person.activity\" #activity=\"ngModel\" required>\r\n                        <option *ngFor=\"let act of activities\" [value]=\"act\">{{ act }}</option>\r\n                    </select>\r\n                    <div class=\"text-danger\" *ngIf=\"activity.touched && activity.invalid && activity.errors.required\">Activity is required</div>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <label for=\"comment\">Comment:</label>\r\n                    <textarea rows=\"4\" for=\"comment\" class=\"form-control\" id=\"comment\" name=\"comment\" [(ngModel)]=\"person.comment\"></textarea>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"submit\" class=\"btn btn-primary\" value=\"Sign up\" [disabled]=\"theForm.invalid\"/>\r\n                </div>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"card\">\r\n    <div class=\"card-body\">\r\n        <form novalidate\r\n              (ngSubmit)=\"save()\"\r\n              [formGroup]=\"supForm\">\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <label class=\"col-md-2 col-form-label\"\r\n                       for=\"firstNameId\">First Name</label>\r\n                <div class=\"col-md-8\">\r\n                    <input class=\"form-control\"\r\n                           id=\"firstNameId\"\r\n                           type=\"text\"\r\n                           placeholder=\"First Name (required)\"\r\n                           required\r\n                           minlength=\"2\"\r\n                           formControlName=\"firstName\"\r\n                           [ngClass]=\"{'is-invalid': (supForm.get('firstName').touched || supForm.get('firstName').dirty) && !supForm.get('firstName').valid }\" />\r\n                    <span class=\"invalid-feedback\">\r\n                        <span *ngIf=\"supForm.get('firstName').errors?.required\">\r\n                            Please enter your first name.\r\n                        </span>\r\n                        <span *ngIf=\"supForm.get('firstName').errors?.minlength\">\r\n                            The first name must be longer than 1 characters.\r\n                        </span>\r\n                    </span>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <label class=\"col-md-2 col-form-label\"\r\n                       for=\"lastNameId\">Last Name</label>\r\n                <div class=\"col-md-8\">\r\n                    <input class=\"form-control\"\r\n                           id=\"lastNameId\"\r\n                           type=\"text\"\r\n                           placeholder=\"Last Name (required)\"\r\n                           required\r\n                           minlength=\"2\"\r\n                           formControlName=\"lastName\"\r\n                           [ngClass]=\"{'is-invalid': (supForm.get('lastName').touched || supForm.get('lastName').dirty) && !supForm.get('lastName').valid }\" />\r\n                    <span class=\"invalid-feedback\">\r\n                        <span *ngIf=\"supForm.get('lastName').errors?.required\">\r\n                            Please enter your last name.\r\n                        </span>\r\n                        <span *ngIf=\"supForm.get('lastName').errors?.minlength\">\r\n                            The last name must be longer than 1 characters.\r\n                        </span>\r\n                    </span>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <label class=\"col-md-2 col-form-label\"\r\n                       for=\"emailId\">Email</label>\r\n                <div class=\"col-md-8\">\r\n                    <input class=\"form-control\"\r\n                           id=\"emailId\"\r\n                           type=\"email\"\r\n                           placeholder=\"Email (required)\"\r\n                           required\r\n                           email\r\n                           formControlName=\"email\"\r\n                           [ngClass]=\"{'is-invalid': (supForm.get('email').touched || supForm.get('email').dirty) && !supForm.get('email').valid }\" />\r\n                    <span class=\"invalid-feedback\">\r\n                        <span *ngIf=\"supForm.get('email').errors?.required\">\r\n                            Please enter your email address.\r\n                        </span>\r\n                        <span *ngIf=\"supForm.get('email').errors?.email\">\r\n                            Please enter a valid email.\r\n                        </span>\r\n                    </span>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <label class=\"col-md-2 col-form-label\"\r\n                       for=\"activityId\">Activity</label>\r\n                <div class=\"col-md-8\">\r\n                    <select class=\"form-control\"\r\n                            id=\"activityId\"\r\n                            name=\"activity\"\r\n                            required\r\n                            formControlName=\"activity\"\r\n                            [ngClass]=\"{'is-invalid': (supForm.get('activity').touched || supForm.get('activity').dirty) && !supForm.get('activity').valid }\">\r\n                        <option *ngFor=\"let act of activities\" [value]=\"act\">{{ act }}</option>\r\n                    </select>\r\n                    <span class=\"invalid-feedback\">\r\n                        <span *ngIf=\"supForm.get('activity').errors?.required\">\r\n                            Please enter an activity.\r\n                        </span>\r\n                        <span *ngIf=\"supForm.get('activity').errors?.valid\">\r\n                            Please enter a valid activity.\r\n                        </span>\r\n                    </span>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <label class=\"col-md-2 col-form-label\"\r\n                       for=\"commentId\">Comment</label>\r\n                <div class=\"col-md-8\">\r\n                    <input class=\"form-control\"\r\n                           id=\"commentId\"\r\n                           type=\"text\"\r\n                           placeholder=\"Comment (optional)\"\r\n                           maxlength=\"50\"\r\n                           formControlName=\"comment\"\r\n                           [ngClass]=\"{'is-invalid': !supForm.get('comment').valid }\" />\r\n                    <span class=\"invalid-feedback\">\r\n                        <span *ngIf=\"supForm.get('comment').errors?.maxlength\">\r\n                            The last name must be 50 characters or less.\r\n                        </span>\r\n                    </span>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group row mb-2\">\r\n                <div class=\"offset-md-2 col-md-4\">\r\n                    <button class=\"btn btn-primary mr-3\"\r\n                            type=\"submit\"\r\n                            style=\"width: 85px\"\r\n                            [title]=\"supForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'\"\r\n                            [disabled]=\"!supForm.valid\">\r\n                        Sign Up\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </form>\r\n    </div>\r\n\r\n</div>\r\n<br>Dirty: {{ supForm.dirty }}\r\n<br>Touched: {{ supForm.touched }}\r\n<br>Valid: {{ supForm.valid }}\r\n<br>Value: {{ supForm.value | json }}");
 
 /***/ }),
 
@@ -410,7 +389,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<h1 class=\"text text-center\">Interested Persons Listing</h1>\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\" *ngFor=\"let p of persons\">\r\n        <div class=\"card bg-light rounded p-1 m-1\">\r\n            <h3>{{ p.firstName }} {{ p.lastName }}</h3>\r\n            <ul class=\"list-unstyled\">\r\n                <li><strong>Email:</strong> {{ p.email }}</li>\r\n                <li><strong>Activity:</strong> {{ p.activity }}</li>\r\n                <li><strong>Comment:</strong> {{ p.comment }}</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<h1 class=\"text text-center\">Interested Persons Listing</h1>\r\n<div class=\"row\">\r\n    <div class=\"col-md-4\" *ngFor=\"let p of persons$ | async\">\r\n        <div class=\"card bg-light rounded p-1 m-1\">\r\n            <h3>{{ p.firstName }} {{ p.lastName }}</h3>\r\n            <ul class=\"list-unstyled\">\r\n                <li><strong>Email:</strong> {{ p.email }}</li>\r\n                <li><strong>Activity:</strong> {{ p.activity }}</li>\r\n                <li><strong>Comment:</strong> {{ p.comment }}</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>");
 
 /***/ }),
 
